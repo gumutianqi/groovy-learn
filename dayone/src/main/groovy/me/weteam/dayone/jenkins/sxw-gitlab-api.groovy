@@ -20,7 +20,7 @@ import org.gitlab4j.api.models.Tag
 
 def gitlab_host = "http://git.sxw.cn"
 
-def api_token = "4yP4giUYcxoxCxMX7s96"
+def api_token = "3T83xAEbYos1gjnFBfto"
 
 GitLabApi gitlab = new GitLabApi(GitLabApi.ApiVersion.V3, gitlab_host,
         Constants.TokenType.PRIVATE, api_token)
@@ -28,17 +28,16 @@ GitLabApi gitlab = new GitLabApi(GitLabApi.ApiVersion.V3, gitlab_host,
 def namespace = "sxw-java"
 def project_name = "platform-service"
 
-Project project = gitlab.getProjectApi().getProject(namespace, project_name)
-
-println project.id + project.name + project.description
-
-List<Tag> tagList = gitlab.tagsApi.getTags(project.id)
-
-tagList.each { tag ->
-    println tag.name
+def projects = []
+gitlab.getProjectApi().getProjects("-service").each { item ->
+    projects.push("${item.namespace.name}/${item.name}")
 }
 
-return tagList
+projects.sort().each {name ->
+    println "\"${name}\","
+}
+
+return ""
 
 
 

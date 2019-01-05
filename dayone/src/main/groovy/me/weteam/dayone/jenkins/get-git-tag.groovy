@@ -13,7 +13,7 @@ package me.weteam.dayone.jenkins
  * @since 1.0.0
  */
 
-def remote_url = "http://git.sxw.cn/sxw-java/platform-service.git"
+def remote_url = "http://git.sxw.cn/xwcz-java/longquan-service.git"
 
 def command = [ "/bin/bash", "-c", "git ls-remote --tags " + remote_url + " | awk '{print \$2}' | grep -v '\\^{}\$' | sort -r -V | sed 's@refs/tags/@@'" ]
 
@@ -22,7 +22,12 @@ process.waitFor()
 
 def tags = process.in.text.tokenize("\n")
 
-println command
+println tags.size()
 
+if(tags.size() == 0) {
+    tags.push("该 Git 工程还没有创建 Tag")
+}
+
+println tags
 return tags
 
